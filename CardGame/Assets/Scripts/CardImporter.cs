@@ -31,26 +31,37 @@ public class CardImporter : EditorWindow
         {
             string[] csvValues = csvLine.Split(',');
 
-            if (csvValues.Length >= 4) // Ensure there are at least 4 columns: Name, Cost, EffectType, EffectValue
+            if (csvValues.Length >= 4) // Ensure there are at least 4 columns: Name, Cost, EffectType1, EffectValue1, EffectType2, EffectValue2, ...
             {
                 string cardName = csvValues[0];
                 int cost = int.Parse(csvValues[1]);
-                string effectType = csvValues[2];
-                int effectValue = int.Parse(csvValues[3]);
 
                 // Create a new scriptable object for each card
                 BaseCard card = ScriptableObject.CreateInstance<BaseCard>();
                 card.cardName = cardName;
                 card.cost = cost;
 
-                // Create and set up card effects based on the effect type and value
-                CardEffectData effectData = new CardEffectData(
-                    (CardEffectData.CardEffectType)System.Enum.Parse(typeof(CardEffectData.CardEffectType), effectType),
-                    effectValue
-                );
-                // Set other effect properties as needed
+                // Start parsing effect data from index 2
+                Debug.Log("csv len: " + csvValues.Length);
+                for (int i = 2; i < csvValues.Length; i += 2)
+                {
+                    if (csvValues[i] != "")
+                    {
+                        string effectType = csvValues[i];
+                        Debug.Log(csvValues[i + 1] + " i: " + i);
+                        int effectValue = int.Parse(csvValues[i + 1]);
 
-                card.cardEffects.Add(effectData);
+                        // Create and set up card effects based on the effect type and value
+                        CardEffectData effectData = new CardEffectData(
+                            (CardEffectData.CardEffectType)System.Enum.Parse(typeof(CardEffectData.CardEffectType), effectType),
+                            effectValue
+                        );
+                        // Set other effect properties as needed
+
+                        card.cardEffects.Add(effectData);
+                    }
+                    
+                }
 
                 // Save the scriptable object as an asset
                 UnityEditor.AssetDatabase.CreateAsset(card, "Assets/ScriptableObj/" + cardName + ".asset");

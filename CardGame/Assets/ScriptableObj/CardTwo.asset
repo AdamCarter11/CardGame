@@ -20,3 +20,8 @@ MonoBehaviour:
     destroyValue: 0
     drawCardsValue: 0
     effectType: 1
+  - damageValue: 0
+    healingValue: 0
+    destroyValue: 0
+    drawCardsValue: 3
+    effectType: 3

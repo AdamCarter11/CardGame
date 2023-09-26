@@ -1,2 +1,2 @@
-CardOne,2,Damage,5
-CardTwo,4,Healing,10
+CardOne,2,Damage,5,,
+CardTwo,4,Healing,10,DrawCards,3
